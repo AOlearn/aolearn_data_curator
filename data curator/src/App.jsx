@@ -45,7 +45,7 @@ function App() {
     const sampleData = selectedXData[0] || [];
   
     let luaCode = `
-  -- Encoded Data
+  AOlearn=require("aolearn")
   local X = {
     ${luaX}
   }
@@ -235,7 +235,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h2 className="title">AOlearn Data Curation</h2>
+      <h2 className="title">AOlearn Data tool</h2>
 
       <div className="form-container">
         <input
