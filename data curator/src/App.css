@@ -1,121 +1,276 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+:root {
+  --primary-blue: #4682EA;
+  --primary-dark: #1a1a2e;
+  --secondary-dark: #2d3748;
+  --light-blue: #e6f0ff;
+  --white: #ffffff;
+  --gray-100: #f7fafc;
+  --gray-200: #edf2f7;
+  --gray-300: #e2e8f0;
+  --gray-400: #cbd5e0;
+  --gray-500: #a0aec0;
+  --gray-600: #718096;
+  --gray-700: #4a5568;
+  --gray-800: #2d3748;
+  --gray-900: #1a202c;
+  --orange-500: #ed8936;
+  --orange-600: #dd6b20;
+  --orange-700: #c05621;
 }
 
 body {
-  background-color: #1a202c;
-  margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--gray-800);
+  line-height: 1.6;
+  background-color: var(--gray-100);
+  overflow-x: hidden;
+}
+
+/* Layout */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .app-container {
-  min-height: 100vh;
-  color: white;
+  width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Header */
+.header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 2.5rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.title {
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.globe-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+  color: var(--primary-blue);
+}
+
+.learn-text {
+  color: var(--primary-blue);
+}
+
+.app-title {
   font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-dark);
 }
 
+/* Tool Container */
+.tool-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.section-description {
+  font-size: 1rem;
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+}
+
+/* Form Container */
 .form-container {
-  width: 100%;
-  max-width: 28rem;
-  background-color: #2d3748;
-  padding: 1.5rem;
+  background-color: var(--white);
+  padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .file-input,
 .select,
-.input,
-.generate-button,
-.copy-button {
+.input {
   width: 100%;
-  background-color: #4a5568;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  margin-bottom: 1rem;
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  color: var(--gray-800);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.select:focus,
+.input:focus,
+.file-input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(70, 130, 234, 0.1);
 }
 
 .label {
   display: block;
-  font-size: 1.125rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  color: var(--gray-700);
 }
 
-.generate-button,
-.copy-button {
-  background-color: #ed8936;
-  font-weight: bold;
-  transition: background-color 0.2s;
+.button-group {
+  display: flex;
+  gap: 1rem;
 }
 
-.generate-button:hover,
-.copy-button:hover {
-  background-color: #dd6b20;
+.btn-generate,
+.btn-copy {
+  flex: 1;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.subtitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
+.btn-generate:hover,
+.btn-copy:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
-.code-output,
-.code-cell {
-  background-color: #2d3748;
-  color: #ed8936;
-  padding: 1rem;
+.btn-copy {
+  background-color: var(--gray-700);
+}
+
+/* Code Output */
+.code-output-container {
+  background-color: var(--white);
+  padding: 2rem;
   border-radius: 1rem;
-  width: 100%;
-  max-width: 28rem;
-  overflow: auto;
-  margin-top: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.code-window {
+  background-color: #282a36;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.code-window:hover {
+  transform: translateY(-5px);
+}
+
+.window-controls {
+  background-color: #1e1f29;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.control.red {
+  background-color: #ff5f56;
+}
+
+.control.yellow {
+  background-color: #ffbd2e;
+}
+
+.control.green {
+  background-color: #27c93f;
+}
+
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gray-400);
+  font-size: 0.875rem;
+}
+
+.code-output {
+  background-color: #282a36;
+  color: #f8f8f2;
+  padding: 1.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  height: 500px;
+}
+
+/* Code Syntax Highlighting */
+.keyword {
+  color: #ff79c6;
+}
+
+.string {
+  color: #f1fa8c;
+}
+
+.comment {
+  color: #6272a4;
+}
+
+.function {
+  color: #8be9fd;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container, .code-output-container {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tool-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .app-title {
+    font-size: 1.5rem;
+  }
 }

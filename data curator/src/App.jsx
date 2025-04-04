@@ -13,7 +13,7 @@ function App() {
   const [regularization, setRegularization] = useState(0.1);
   const [kValue, setKValue] = useState(3);
   const [numClasses, setNumClasses] = useState(2);
-
+  
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -223,97 +223,123 @@ function App() {
     navigator.clipboard.writeText(luaCode);
   };
 
-  const collapseLuaCode = (luaCode) => {
-    const lines = luaCode.split('\n');
-    if (lines.length <= 20) return luaCode;
-    return [
-      ...lines.slice(0, 10),
-      '...',
-      ...lines.slice(-10)
-    ].join('\n');
-  };
-
   return (
-    <div className="app-container">
-      <h2 className="title">AOlearn Data tool</h2>
+    <div className="app-layout">
+      <div className="app-container">
+        <div className="header">
+          <div className="logo">
+            <svg viewBox="0 0 24 24" className="globe-icon">
+              <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M12 4C14.7614 4 17 8.02944 17 13C17 17.9706 14.7614 22 12 22C9.23858 22 7 17.9706 7 13C7 8.02944 9.23858 4 12 4Z" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M4 12H20" stroke="currentColor" strokeWidth="2" />
+            </svg>
+            <span>AO | <span className="learn-text">Learn</span></span>
+          </div>
+          <h1 className="app-title">Data Curator</h1>
+        </div>
+        
+        <div className="tool-container" style={{ 
+          display: 'flex', 
+          flexDirection: 'row', 
+          gap: '20px',
+          flexWrap: 'wrap' 
+        }}>
+          <div className="form-container" style={{ 
+            flex: '1', 
+            minWidth: '300px' 
+          }}>
+            <h2 className="section-title">Upload & Generate</h2>
+            <p className="section-description">Upload your CSV data and generate Lua code for machine learning models</p>
+            
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFileUpload}
+              className="file-input"
+            />
 
-      <div className="form-container">
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileUpload}
-          className="file-input"
-        />
+            <label className="label">Select Features (X):</label>
+            <select
+              multiple
+              onChange={(e) =>
+                setXColumns([...e.target.selectedOptions].map((opt) => opt.value))
+              }
+              className="select"
+            >
+              {columns.map((col, index) => (
+                <option key={index} value={col}>
+                  {col}
+                </option>
+              ))}
+            </select>
 
-        <label className="label">Select Features (X):</label>
-        <select
-          multiple
-          onChange={(e) =>
-            setXColumns([...e.target.selectedOptions].map((opt) => opt.value))
-          }
-          className="select"
-        >
-          {columns.map((col, index) => (
-            <option key={index} value={col}>
-              {col}
-            </option>
-          ))}
-        </select>
+            <label className="label">Select Target (Y):</label>
+            <select
+              onChange={(e) => setYColumn(e.target.value)}
+              className="select"
+            >
+              <option value="">Select Y</option>
+              {columns.map((col, index) => (
+                <option key={index} value={col}>
+                  {col}
+                </option>
+              ))}
+            </select>
 
-        <label className="label">Select Target (Y):</label>
-        <select
-          onChange={(e) => setYColumn(e.target.value)}
-          className="select"
-        >
-          <option value="">Select Y</option>
-          {columns.map((col, index) => (
-            <option key={index} value={col}>
-              {col}
-            </option>
-          ))}
-        </select>
+            <label className="label">Select Model:</label>
+            <select
+              onChange={(e) => setModel(e.target.value)}
+              className="select"
+            >
+              <option value="linear_regression">Linear Regression</option>
+              <option value="logistic_regression">Logistic Regression</option>
+              <option value="lasso_regression">Lasso Regression</option>
+              <option value="ridge_regression">Ridge Regression</option>
+              <option value="multiclass_logistic">Multiclass Logistic Regression</option>
+              <option value="naive_bayes">Naive Bayes</option>
+              <option value="knn">K-Nearest Neighbors</option>
+              <option value="kmeans">K-Means Clustering</option>
+            </select>
 
-        <label className="label">Select Model:</label>
-        <select
-          onChange={(e) => setModel(e.target.value)}
-          className="select"
-        >
-          <option value="linear_regression">Linear Regression</option>
-          <option value="logistic_regression">Logistic Regression</option>
-          <option value="lasso_regression">Lasso Regression</option>
-          <option value="ridge_regression">Ridge Regression</option>
-          <option value="multiclass_logistic">Multiclass Logistic Regression</option>
-          <option value="naive_bayes">Naive Bayes</option>
-          <option value="knn">K-Nearest Neighbors</option>
-          <option value="kmeans">K-Means Clustering</option>
-        </select>
+            {renderModelOptions()}
 
-        {renderModelOptions()}
+            <div className="button-group">
+              <button
+                onClick={() =>
+                  document.getElementById("luaOutput").textContent = generateLuaCode()
+                }
+                className="btn-generate"
+              >
+                Generate Lua Code
+              </button>
+              <button
+                onClick={copyToClipboard}
+                className="btn-copy"
+              >
+                Copy to Clipboard
+              </button>
+            </div>
+          </div>
 
-        <button
-          onClick={() =>
-            document.getElementById("luaOutput").textContent = generateLuaCode()
-          }
-          className="generate-button squircle"
-        >
-          Generate Lua Code
-        </button>
-        <button
-          onClick={copyToClipboard}
-          className="copy-button squircle"
-        >
-          Copy to Clipboard
-        </button>
+          <div className="code-output-container" style={{ 
+            flex: '1', 
+            minWidth: '300px' 
+          }}>
+            <div className="code-window">
+              <div className="window-controls">
+                <span className="control red"></span>
+                <span className="control yellow"></span>
+                <span className="control green"></span>
+                <div className="window-title">Generated Lua Code</div>
+              </div>
+              <pre
+                id="luaOutput"
+                className="code-output"
+              ></pre>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <h3 className="subtitle">Quick Code Cell:</h3>
-      <textarea
-        id="quickCodeCell"
-        className="code-cell"
-        rows="10"
-        readOnly
-        value={generateLuaCode()}
-      ></textarea>
     </div>
   );
 }
